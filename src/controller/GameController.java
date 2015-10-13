@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import model.FleetPositionModel;
 import view.FleetPositionView;
 import view.LeaderBoardView;
 import view.StartView;
@@ -59,9 +60,8 @@ public class GameController
 	public void launchFleetPosition() {
 		System.out.println("Navigating to Fleet Position View");
 		
-		int fleetPositionModel = 0; // This will later become a class that holds the data of the fleet positioning model, this is just a demo
 		FleetPositionView fleetPositionView = new FleetPositionView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
-		
+		FleetPositionModel fleetPositionModel = new FleetPositionModel();
 		FleetPositionController fleetPositionController = new FleetPositionController(fleetPositionModel, fleetPositionView);
 		
 		fleetPositionView.getMainButton().addActionListener(new ActionListener() {
