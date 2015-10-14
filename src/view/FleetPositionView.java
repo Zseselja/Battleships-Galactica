@@ -1,10 +1,12 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -19,8 +21,9 @@ public class FleetPositionView extends JPanel {
 	private static final int BOARD_PANEL_CELL_SIZE = 50;
 	
 	private JTextField textField;
+	private JLabel header;
 	private JButton mainButton;
-	private JButton manipulateModelButton;
+	private JButton doneButton;
 	private JButton rotateButton;
 	private JPanel boardPanel;
 	private BoardPiece[][] board;
@@ -34,32 +37,34 @@ public class FleetPositionView extends JPanel {
 	public FleetPositionView(int width, int height) {
 		this.setLayout(null);
 		
-		this.textField = new JTextField("Choose the Position of your fleet");
+		this.header = new JLabel("Choose the Position of your Fleet");
+		this.header.setFont(new Font("Arial Black", Font.PLAIN, 24));
+		this.header.setBounds(100, 0, 500, 100);
+		this.add(this.header);
+		
+		/*this.textField = new JTextField("Choose the Position of your fleet");
 		this.textField.setBounds(200, 0, 300, 100);
-		this.add(this.textField);
+		this.add(this.textField);*/
 		
 		// Render the return to start button
 		this.mainButton = new JButton("Back to Main Menu");
-		
 		int mainButtonX = (width)-(MAIN_BUTTON_WIDTH);
 		int mainButtonY = (height)-(MAIN_BUTTON_HEIGHT);
 		this.mainButton.setBounds(mainButtonX, mainButtonY, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.mainButton);
 		
+		this.doneButton = new JButton("Done");
+		int doneButtonX = (width)-(2*MAIN_BUTTON_WIDTH);
+		int doneButtonY = (height)-(MAIN_BUTTON_HEIGHT);
+		this.doneButton.setBounds(doneButtonX, doneButtonY, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.doneButton);
+		
 		this.rotateButton = new JButton("Rotate");
 		this.rotateButton.setBounds(600, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.rotateButton);
 		
-		// Render the (demo) manipulateModel button
-		this.manipulateModelButton = new JButton("Do the thing!");
-		
-		this.manipulateModelButton.setBounds(0, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
-		this.add(this.manipulateModelButton);
-		
-		// Render the board panel
 		this.boardPanel = new BoardPanel();
-
-		// Not sure why, but have to add +1 or right and bottom border dont show
+		// Not sure why, but have to add +1 or else the right and bottom border don't show
 		int boardWidth = (BOARD_PANEL_MAX_ROWS*BOARD_PANEL_CELL_SIZE)+1;
 		int boardHeight = (BOARD_PANEL_MAX_COLS*BOARD_PANEL_CELL_SIZE)+1;
 		this.boardPanel.setBounds(BOARD_PANEL_X_OFFSET, BOARD_PANEL_Y_OFFSET, boardWidth, boardHeight);
@@ -85,20 +90,22 @@ public class FleetPositionView extends JPanel {
 		this.patrolButton.setBounds(800, 400, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.patrolButton);
 		
+		
+		board = new BoardPiece[BOARD_PANEL_MAX_COLS][BOARD_PANEL_MAX_ROWS];
+		for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
+            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+                BoardPiece cell = new BoardPiece(col*BOARD_PANEL_CELL_SIZE, row*BOARD_PANEL_CELL_SIZE, 
+                		BOARD_PANEL_CELL_SIZE, BOARD_PANEL_CELL_SIZE, Color.GRAY);
+                board[col][row] = cell;
+            }
+        }
+		
 	}
 	
 	private class BoardPanel extends JPanel {
 		
 		public BoardPanel() {
 			this.setLayout(null);
-			board = new BoardPiece[BOARD_PANEL_MAX_COLS][BOARD_PANEL_MAX_ROWS];
-			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
-	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
-	                BoardPiece cell = new BoardPiece(col*BOARD_PANEL_CELL_SIZE, row*BOARD_PANEL_CELL_SIZE, 
-	                		BOARD_PANEL_CELL_SIZE, BOARD_PANEL_CELL_SIZE, Color.GRAY);
-	                board[col][row] = cell;
-	            }
-	        }
 		}
 		
 		@Override
@@ -139,10 +146,10 @@ public class FleetPositionView extends JPanel {
 		return mainButton;
 	}
 	
-	public JButton getManipulateModelButton() {
-		return manipulateModelButton;
+	public JButton getDoneButton() {
+		return doneButton;
 	}
-	
+
 	public JTextField getTextField() {
 		return textField;
 	}

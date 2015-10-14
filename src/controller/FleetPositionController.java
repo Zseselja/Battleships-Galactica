@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import model.FleetPositionModel;
 import model.Ship;
@@ -28,21 +32,21 @@ public class FleetPositionController {
 	}
 	
 	private void renderView() {
-		this.view.getTextField().setText(Integer.toString(this.model.getTest()));
+		//this.view.getTextField().setText(Integer.toString(this.model.getTest()));
 		for (Ship s: this.model.getShips()) {
 			if (s.isVertical()) {
-				int headRow = (int) s.getHead().y;
-				int tailRow = (int) s.getTail().y;
-				int col = (int) s.getHead().x;
-				for (int row = headRow; row <= tailRow; row++) {
-					this.view.getBoard()[col][row].setColor(Color.RED);;
+				int col = s.getHead().x;
+				int row = s.getHead().y;
+				int endRow = s.getTail().y;
+				while (row <= endRow) {
+					this.view.getBoard()[col][row++].setColor(Color.RED);
 				}
 			} else {
-				int headCol = (int) s.getHead().x;
-				int tailCol = (int) s.getTail().x;
-				int row = (int) s.getHead().y;
-				for (int col = headCol; col <= tailCol; col++) {
-					this.view.getBoard()[col][row].setColor(Color.RED);;
+				int row = s.getHead().y;
+				int col = s.getHead().x;
+				int endCol = s.getTail().x;
+				while (col <= endCol) {
+					this.view.getBoard()[col++][row].setColor(Color.RED);
 				}
 			}
 		}
@@ -50,21 +54,14 @@ public class FleetPositionController {
 	}
 	
     private void setUpViewEvents() {
-		view.getManipulateModelButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Doing the thing!");
-				doTheThing();
-			}
-		});
-		
 		view.getBoardPanel().addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				
 				int col = e.getX()/FleetPositionView.getBoardPanelCellSize();
 				int row = e.getY()/FleetPositionView.getBoardPanelCellSize();
-
+				
 				if (model.getShipToPlace() != null) {
 					/*
 					 * The ship selected has not been placed on the board yet.
@@ -99,17 +96,19 @@ public class FleetPositionController {
 					 * The ship selected is already on the board. So we translate the Ship to where
 					 * the user clicked. 
 					 */
-					int dx = col-model.getCurrentShip().getHead().x;
-					int dy = row-model.getCurrentShip().getHead().y;
-					
-					Point tempTail = new Point(model.getCurrentShip().getTail());
-					tempTail.translate(dx, dy);
-					if (!isPointInBoard(tempTail)) {
-						System.out.println("The new tail is not in the board");
-						return;
+					if (model.getCurrentShip() != null) {
+						int dx = col-model.getCurrentShip().getHead().x;
+						int dy = row-model.getCurrentShip().getHead().y;
+						
+						Point tempTail = new Point(model.getCurrentShip().getTail());
+						tempTail.translate(dx, dy);
+						if (!isPointInBoard(tempTail)) {
+							System.out.println("The new tail is not in the board");
+							return;
+						}
+	
+						model.getCurrentShip().translate(dx, dy);
 					}
-
-					model.getCurrentShip().translate(dx, dy);
 				}
 				
 				renderView();
@@ -188,6 +187,53 @@ public class FleetPositionController {
 				renderView();
 			}
 		});
+		
+		view.getDoneButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Point> points = new ArrayList<Point>();
+				
+				boolean shipIntersection = false;
+				for (Ship s: model.getShips()) {
+					if (s.isVertical()) {
+						int col = s.getHead().x;
+						int row = s.getHead().y;
+						int endRow = s.getTail().y;
+						
+						while (row <= endRow) {
+							Point curr = new Point(col, row);
+							if (points.contains(curr)) {
+								shipIntersection = true;
+							} else {
+								points.add(new Point(col, row));
+							}
+							row++;
+						}
+					} else {
+						int row = s.getHead().y;
+						int col = s.getHead().x;
+						int endCol = s.getTail().x;
+						while (col <= endCol) {
+							Point curr = new Point(col, row);
+							if (points.contains(curr)) {
+								shipIntersection = true;
+							} else {
+								points.add(new Point(col, row));
+							}
+							col++;
+						}
+					}
+				}
+				
+				if (shipIntersection) {
+					System.out.println("The board is invalid");
+					return;
+				} else {
+					//Go to game play view.
+				}
+				
+			}
+		});
     }
     
     /*
@@ -218,14 +264,6 @@ public class FleetPositionController {
     	return true;
     }
     
-    /**
-     * A sample method that manipulates the model in some way, then calls a method that re-renders all the view
-     * elements based on that model
-     * 
-     * Another example might be placeShip(Point pos)
-     */
-    private void doTheThing() {
-    	model.setTest(model.getTest()+1);
-    	renderView();
-    }
+    //Done. create list of all points on map. if there is a duplicate..then the fleet position is invalid.
+
 }
