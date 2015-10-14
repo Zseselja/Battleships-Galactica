@@ -1,31 +1,34 @@
 package model;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FleetPositionModel {
-	private ShipType selectedShip;
-	private List<Ship> ships;
-	private int test;
+	//shipToPlace is modified when the user clicks one of the ship buttons. 
+	//If the ship (for the button) has already been placed on the board, then shipToPlace = null
+	private ShipType shipToPlace;
 	
-	private Point selectedHead;
-	private Point selectedTail;
+	//Any clicks to the board always translates the currentShip and any clicks to the rotate button always rotate the currentShip
+	private Ship currentShip;
+	
+	private List<Ship> ships;
+	private ShipFactory shipFactory;
+	private int test;
 	
 	public FleetPositionModel() {
 		this.test = 0;
 		this.ships = new ArrayList<Ship>();
-		this.selectedShip = null;
-		this.selectedHead = null;
-		this.selectedTail = null;
+		this.shipToPlace = null;
+		this.currentShip = null;
+		this.shipFactory = new ShipFactory();
 	}
 
-	public ShipType getSelectedShip() {
-		return selectedShip;
+	public ShipType getShipToPlace() {
+		return shipToPlace;
 	}
 
-	public void setSelectedShip(ShipType selectedShip) {
-		this.selectedShip = selectedShip;
+	public void setShipToPlace(ShipType shipToPlace) {
+		this.shipToPlace = shipToPlace;
 	}
 
 	public int getTest() {
@@ -44,22 +47,16 @@ public class FleetPositionModel {
 		this.ships = ships;
 	}
 
-	public Point getSelectedHead() {
-		return selectedHead;
+	public Ship getCurrentShip() {
+		return currentShip;
 	}
 
-	public void setSelectedHead(Point selectedHead) {
-		this.selectedHead = selectedHead;
+	public void setCurrentShip(Ship currentShip) {
+		this.currentShip = currentShip;
 	}
 
-	public Point getSelectedTail() {
-		return selectedTail;
+	public ShipFactory getShipFactory() {
+		return shipFactory;
 	}
-
-	public void setSelectedTail(Point selectedTail) {
-		this.selectedTail = selectedTail;
-	}
-
-	
 	
 }

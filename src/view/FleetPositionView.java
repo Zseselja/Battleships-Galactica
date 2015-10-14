@@ -1,8 +1,8 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -21,9 +21,15 @@ public class FleetPositionView extends JPanel {
 	private JTextField textField;
 	private JButton mainButton;
 	private JButton manipulateModelButton;
+	private JButton rotateButton;
 	private JPanel boardPanel;
+	private BoardPiece[][] board;
 	
 	private JButton aircraftCarrierButton;
+	private JButton battleshipButton;
+	private JButton destroyerButton;
+	private JButton patrolButton;
+	private JButton subButton;
 	
 	public FleetPositionView(int width, int height) {
 		this.setLayout(null);
@@ -39,6 +45,10 @@ public class FleetPositionView extends JPanel {
 		int mainButtonY = (height)-(MAIN_BUTTON_HEIGHT);
 		this.mainButton.setBounds(mainButtonX, mainButtonY, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.mainButton);
+		
+		this.rotateButton = new JButton("Rotate");
+		this.rotateButton.setBounds(600, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.rotateButton);
 		
 		// Render the (demo) manipulateModel button
 		this.manipulateModelButton = new JButton("Do the thing!");
@@ -59,12 +69,36 @@ public class FleetPositionView extends JPanel {
 		this.aircraftCarrierButton.setBounds(800, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.aircraftCarrierButton);
 		
+		this.battleshipButton = new JButton("Battleship");
+		this.battleshipButton.setBounds(800, 100, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.battleshipButton);
+		
+		this.destroyerButton = new JButton("Destroyer");
+		this.destroyerButton.setBounds(800, 200, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.destroyerButton);
+		
+		this.subButton = new JButton("Sub");
+		this.subButton.setBounds(800, 300, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.subButton);
+		
+		this.patrolButton = new JButton("Patrol");
+		this.patrolButton.setBounds(800, 400, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.add(this.patrolButton);
+		
 	}
 	
-	class BoardPanel extends JPanel {
+	private class BoardPanel extends JPanel {
 		
 		public BoardPanel() {
 			this.setLayout(null);
+			board = new BoardPiece[BOARD_PANEL_MAX_COLS][BOARD_PANEL_MAX_ROWS];
+			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
+	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+	                BoardPiece cell = new BoardPiece(col*BOARD_PANEL_CELL_SIZE, row*BOARD_PANEL_CELL_SIZE, 
+	                		BOARD_PANEL_CELL_SIZE, BOARD_PANEL_CELL_SIZE, Color.GRAY);
+	                board[col][row] = cell;
+	            }
+	        }
 		}
 		
 		@Override
@@ -72,14 +106,33 @@ public class FleetPositionView extends JPanel {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
 			
-			for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
-	            for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
-	                Rectangle cell = new Rectangle(col*BOARD_PANEL_CELL_SIZE, row*BOARD_PANEL_CELL_SIZE, 
-	                		BOARD_PANEL_CELL_SIZE, BOARD_PANEL_CELL_SIZE);
-	                g2d.draw(cell);
+			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
+	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+	            	g2d.setColor(board[col][row].getColor());
+	            	if (board[col][row].getColor() != Color.GRAY) {
+	            		g2d.fill(board[col][row]);
+	            	} else {
+	            		g2d.draw(board[col][row]);
+	            	}
 	            }
-	        }	
+	        }
+			
+			//erase Board data after each paint
+			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
+	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+	            	board[col][row].setColor(Color.GRAY);
+	            }
+	        }
 		}
+		
+	}
+	
+	public BoardPiece[][] getBoard() {
+		return board;
+	}
+	
+	public JButton getRotateButton() {
+		return rotateButton;
 	}
 
 	public JButton getMainButton() {
@@ -129,5 +182,21 @@ public class FleetPositionView extends JPanel {
 	public JButton getAircraftCarrierButton() {
 		return aircraftCarrierButton;
 	}
-	
+
+	public JButton getBattleshipButton() {
+		return battleshipButton;
+	}
+
+	public JButton getDestroyerButton() {
+		return destroyerButton;
+	}
+
+	public JButton getPatrolButton() {
+		return patrolButton;
+	}
+
+	public JButton getSubButton() {
+		return subButton;
+	}
+
 }
