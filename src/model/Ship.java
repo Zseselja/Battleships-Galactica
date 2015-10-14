@@ -92,7 +92,10 @@ public class Ship {
 			return Math.abs(head.x-tail.x);
 		}
 	}
-
+       /*
+	* This method determines if the shot from a player 
+	* hits a ship on the board or not. 
+	*/
 	public boolean intersects(Point hit) {
 		if ((this.head.x >= hit.x) && (this.tail.x <= hit.x)) {
 			if ((this.head.y >= hit.y) && (this.tail.y <= hit.y)) {
