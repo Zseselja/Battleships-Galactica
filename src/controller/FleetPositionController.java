@@ -9,8 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
-
 import model.FleetPositionModel;
 import model.Ship;
 import model.ShipType;
@@ -204,6 +202,7 @@ public class FleetPositionController {
 							Point curr = new Point(col, row);
 							if (points.contains(curr)) {
 								shipIntersection = true;
+								break;
 							} else {
 								points.add(new Point(col, row));
 							}
@@ -217,6 +216,7 @@ public class FleetPositionController {
 							Point curr = new Point(col, row);
 							if (points.contains(curr)) {
 								shipIntersection = true;
+								break;
 							} else {
 								points.add(new Point(col, row));
 							}
@@ -263,7 +263,5 @@ public class FleetPositionController {
     	}
     	return true;
     }
-    
-    //Done. create list of all points on map. if there is a duplicate..then the fleet position is invalid.
 
 }
