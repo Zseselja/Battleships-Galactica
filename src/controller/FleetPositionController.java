@@ -185,55 +185,6 @@ public class FleetPositionController {
 				renderView();
 			}
 		});
-		
-		view.getDoneButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				List<Point> points = new ArrayList<Point>();
-				
-				boolean shipIntersection = false;
-				for (Ship s: model.getShips()) {
-					if (s.isVertical()) {
-						int col = s.getHead().x;
-						int row = s.getHead().y;
-						int endRow = s.getTail().y;
-						
-						while (row <= endRow) {
-							Point curr = new Point(col, row);
-							if (points.contains(curr)) {
-								shipIntersection = true;
-								break;
-							} else {
-								points.add(new Point(col, row));
-							}
-							row++;
-						}
-					} else {
-						int row = s.getHead().y;
-						int col = s.getHead().x;
-						int endCol = s.getTail().x;
-						while (col <= endCol) {
-							Point curr = new Point(col, row);
-							if (points.contains(curr)) {
-								shipIntersection = true;
-								break;
-							} else {
-								points.add(new Point(col, row));
-							}
-							col++;
-						}
-					}
-				}
-				
-				if (shipIntersection) {
-					System.out.println("The board is invalid");
-					return;
-				} else {
-					//Go to game play view.
-				}
-				
-			}
-		});
     }
     
     /*
@@ -262,6 +213,47 @@ public class FleetPositionController {
     		return false;
     	}
     	return true;
+    }
+    
+
+    public List<Ship> getPlacedShips() {
+    	List<Point> points = new ArrayList<Point>();
+    	List<Ship> ships = model.getShips();
+
+    	if (ships.size() < 5) return null;
+    	
+		for (Ship s: ships) {
+			if (s.isVertical()) {
+				int col = s.getHead().x;
+				int row = s.getHead().y;
+				int endRow = s.getTail().y;
+				
+				while (row <= endRow) {
+					Point curr = new Point(col, row);
+					if (points.contains(curr)) {
+						return null;
+					} else {
+						points.add(new Point(col, row));
+					}
+					row++;
+				}
+			} else {
+				int row = s.getHead().y;
+				int col = s.getHead().x;
+				int endCol = s.getTail().x;
+				while (col <= endCol) {
+					Point curr = new Point(col, row);
+					if (points.contains(curr)) {
+						return null;
+					} else {
+						points.add(new Point(col, row));
+					}
+					col++;
+				}
+			}
+		}
+		
+		return ships;
     }
 
 }

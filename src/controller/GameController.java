@@ -3,17 +3,23 @@ package controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import model.FleetPositionModel;
+import model.GamePlayModel;
 import view.FleetPositionView;
+import view.GamePlayView;
 import view.LeaderBoardView;
 import view.StartView;
 import view.Views;
 import view.Window;
+import model.Ship;
 
 public class GameController 
 {
 	private Window window;
+	private FleetPositionController fleetPositionController;
+	private GamePlayController gamePlayController;
 	
 	public GameController(Window window) {
 		// Initialize the window
@@ -62,7 +68,7 @@ public class GameController
 		
 		FleetPositionView fleetPositionView = new FleetPositionView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
 		FleetPositionModel fleetPositionModel = new FleetPositionModel();
-		FleetPositionController fleetPositionController = new FleetPositionController(fleetPositionModel, fleetPositionView);
+		this.fleetPositionController = new FleetPositionController(fleetPositionModel, fleetPositionView);
 		
 		fleetPositionView.getMainButton().addActionListener(new ActionListener() {
 			@Override
@@ -73,15 +79,18 @@ public class GameController
 			}
 		});
 		
-		// Placed here to show how another button would be added
-//		fleetPositionView.getFinsishedPlacingButton().addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("Navigating to beginning of game");
-//				
-//				launchGame();
-//			}
-//		});
+		fleetPositionView.getDoneButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				List<Ship> ships = fleetPositionController.getPlacedShips();
+				if (ships != null) {
+					launchGamePlay();
+				}
+				
+			}
+		});
+		
 		
 		this.window.add(fleetPositionView, Views.FLEET_POSITION_VIEW);
 		CardLayout layout = (CardLayout) window.getContentPane().getLayout();
@@ -92,7 +101,7 @@ public class GameController
 	 * Instantiates the LeaderBoardView, binds to its panel-changing actions, and applies it to the window
 	 */
 	public void launchLeaderBoard() {
-		System.out.println("Navigating to Fleet Position View");
+		System.out.println("Navigating to Leader Board View");
 		
 		LeaderBoardView leaderBoardView = new LeaderBoardView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
 		
@@ -107,6 +116,21 @@ public class GameController
 		this.window.add(leaderBoardView, Views.LEADER_BOARD_VIEW);
 		CardLayout layout = (CardLayout) window.getContentPane().getLayout();
 		layout.show(window.getContentPane(), Views.LEADER_BOARD_VIEW);
+	}
+	
+	/**
+	 * Instantiates the GamePlayView, binds to its panel-changing actions, and applies it to the window
+	 */
+	public void launchGamePlay() {
+		System.out.println("Navigating to Game Play View");
+		
+		GamePlayView gamePlayView = new GamePlayView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
+		GamePlayModel gamePlayModel = new GamePlayModel();
+		this.gamePlayController = new GamePlayController(gamePlayModel, gamePlayView);
+		
+		this.window.add(gamePlayView, Views.GAME_PLAY_VIEW);
+		CardLayout layout = (CardLayout) window.getContentPane().getLayout();
+		layout.show(window.getContentPane(), Views.GAME_PLAY_VIEW);
 	}
 
 }
