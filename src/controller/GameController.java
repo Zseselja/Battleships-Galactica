@@ -83,11 +83,10 @@ public class GameController
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				List<Ship> ships = fleetPositionController.getPlacedShips();
+				List<Ship> ships = fleetPositionController.getCorrectlyPlacedShips();
 				if (ships != null) {
 					launchGamePlay();
 				}
-				
 			}
 		});
 		

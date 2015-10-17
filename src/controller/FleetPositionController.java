@@ -8,9 +8,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import model.FleetPositionModel;
 import model.Ship;
+import model.ShipFactory;
+import model.ShipList;
 import model.ShipType;
 import view.FleetPositionView;
 
@@ -31,7 +34,7 @@ public class FleetPositionController {
 	
 	private void renderView() {
 		//this.view.getTextField().setText(Integer.toString(this.model.getTest()));
-		for (Ship s: this.model.getShips()) {
+		for (Ship s: this.model.getPlacedShips()) {
 			if (s.isVertical()) {
 				int col = s.getHead().x;
 				int row = s.getHead().y;
@@ -63,7 +66,7 @@ public class FleetPositionController {
 				if (model.getShipToPlace() != null) {
 					/*
 					 * The ship selected has not been placed on the board yet.
-					 * So we create the ship and add it to the list of ships. 
+					 * So we create the ship, add it to the list of ships, and set it as the currentShip.
 					 * The head of the ship is where the user clicked.
 					 */
 					Point head = new Point(col, row);
@@ -87,12 +90,12 @@ public class FleetPositionController {
 					}
 					
 					model.setCurrentShip(s);
-					model.getShips().add(s);
+					model.getPlacedShips().add(s);
 					model.setShipToPlace(null);
 				} else {
 					/*
-					 * The ship selected is already on the board. So we translate the Ship to where
-					 * the user clicked. 
+					 * The ship selected is already on the board. If there is a current ship,
+					 * we translate the Ship to where the user clicked. 
 					 */
 					if (model.getCurrentShip() != null) {
 						int dx = col-model.getCurrentShip().getHead().x;
@@ -128,35 +131,65 @@ public class FleetPositionController {
 		view.getAircraftCarrierButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShipToModify(ShipType.AIRCRAFT_CARRIER);
+				ShipType type = ShipType.AIRCRAFT_CARRIER;
+				Ship ship = model.getPlacedShips().getShip(type);
+				if (ship == null) {
+					model.setShipToPlace(type);
+				} else {
+					model.setCurrentShip(ship);
+				}
 			}
 		});
 		
 		view.getBattleshipButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShipToModify(ShipType.BATTLESHIP);
+				ShipType type = ShipType.BATTLESHIP;
+				Ship ship = model.getPlacedShips().getShip(type);
+				if (ship == null) {
+					model.setShipToPlace(type);
+				} else {
+					model.setCurrentShip(ship);
+				}
 			}
 		});
 		
 		view.getDestroyerButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShipToModify(ShipType.DESTROYER);
+				ShipType type = ShipType.DESTROYER;
+				Ship ship = model.getPlacedShips().getShip(type);
+				if (ship == null) {
+					model.setShipToPlace(type);
+				} else {
+					model.setCurrentShip(ship);
+				}
 			}
 		});
 		
 		view.getSubButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShipToModify(ShipType.SUB);
+				ShipType type = ShipType.SUB;
+				Ship ship = model.getPlacedShips().getShip(type);
+				if (ship == null) {
+					model.setShipToPlace(type);
+				} else {
+					model.setCurrentShip(ship);
+				}
 			}
 		});
 		
 		view.getPatrolButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShipToModify(ShipType.PATROL);
+				ShipType type = ShipType.PATROL;
+				Ship ship = model.getPlacedShips().getShip(type);
+				if (ship == null) {
+					model.setShipToPlace(type);
+				} else {
+					model.setCurrentShip(ship);
+				}
 			}
 		});
 		
@@ -187,26 +220,6 @@ public class FleetPositionController {
 		});
     }
     
-    /*
-     * Checks whether the specified ship is already on the board,
-     * if it is then it sets the currentShip to that (so that any clicks on the board translate that ship, and any clicks
-     * to the rotate button, rotate that ship)
-     * if not, then it sets the shipToPlace as the specified ship
-     */
-    private void setShipToModify(ShipType type) {
-    	boolean alreadyPlaced = false;
-		for (Ship s: model.getShips()) {
-			if (s.getType() == type) {
-				model.setCurrentShip(s);
-				alreadyPlaced = true;
-			}
-		}
-		
-		if (!alreadyPlaced) {
-			model.setShipToPlace(type);
-		}
-    }
-    
     private boolean isPointInBoard(Point p) {
     	if (p.x > FleetPositionView.getBoardPanelMaxCols()-1
     			|| p.y > FleetPositionView.getBoardPanelMaxRows()-1) {
@@ -215,45 +228,64 @@ public class FleetPositionController {
     	return true;
     }
     
+    public List<Ship> getCorrectlyPlacedShips() {
 
-    public List<Ship> getPlacedShips() {
-    	List<Point> points = new ArrayList<Point>();
-    	List<Ship> ships = model.getShips();
-
-    	if (ships.size() < 5) return null;
+    	if (model.isAllShipsPlaced()) {
+    		if (!model.getPlacedShips().isAnyShipIntersecting()) {
+    			return model.getPlacedShips();
+    		} else {
+    			System.out.println("Ships are intersecting");
+    			//Update view message to say that ships are intersecting
+        		//renderView();
+    			return null;
+    		}
+    	} else {
+    		System.out.println("Not all ships placed");
+    		//Update view message to say that not all ships placed
+    		//renderView();
+    		return null;
+    	}
+    }
+    
+    public List<Ship> generateComputerShips() {
+    	ShipList placedShips = new ShipList();
+    	List<ShipType> shipsToBuild = new ArrayList<ShipType>();
+    	shipsToBuild.add(ShipType.AIRCRAFT_CARRIER);
+    	shipsToBuild.add(ShipType.BATTLESHIP);
+    	shipsToBuild.add(ShipType.DESTROYER);
+    	shipsToBuild.add(ShipType.SUB);
+    	shipsToBuild.add(ShipType.PATROL);
     	
-		for (Ship s: ships) {
-			if (s.isVertical()) {
-				int col = s.getHead().x;
-				int row = s.getHead().y;
-				int endRow = s.getTail().y;
-				
-				while (row <= endRow) {
-					Point curr = new Point(col, row);
-					if (points.contains(curr)) {
-						return null;
-					} else {
-						points.add(new Point(col, row));
-					}
-					row++;
-				}
-			} else {
-				int row = s.getHead().y;
-				int col = s.getHead().x;
-				int endCol = s.getTail().x;
-				while (col <= endCol) {
-					Point curr = new Point(col, row);
-					if (points.contains(curr)) {
-						return null;
-					} else {
-						points.add(new Point(col, row));
-					}
-					col++;
-				}
-			}
-		}
-		
-		return ships;
+    	ShipFactory factory = model.getShipFactory();
+    	
+    	while (!shipsToBuild.isEmpty()) {
+    		ShipType type = shipsToBuild.remove(0);
+    		boolean intersection;
+    		boolean outOfBoard;
+    		do {
+    			intersection = false;
+    			outOfBoard = false;
+	    		Random r = new Random();
+	        	int randX = r.nextInt(FleetPositionView.getBoardPanelMaxCols());
+	        	int randY = r.nextInt(FleetPositionView.getBoardPanelMaxRows());
+	        	
+	        	Point head = new Point(randX, randY);
+	    		Ship ship = factory.buildRandomShip(head, type);
+	    		if (ship.getTail().x >= FleetPositionView.getBoardPanelMaxCols() || ship.getTail().y >= FleetPositionView.getBoardPanelMaxRows()) {
+	    			outOfBoard = true;
+	    		}
+	    		
+	    		if (!outOfBoard) {
+		    		placedShips.add(ship);
+		    		if (placedShips.isAnyShipIntersecting()) {
+		    			intersection = true;
+		    			placedShips.remove(ship);
+		    		}
+	    		}
+    		} while (intersection || outOfBoard);
+    	}
+
+    	return placedShips;
     }
 
 }

@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FleetPositionModel {
 	//shipToPlace is modified when the user clicks one of the ship buttons. 
 	//If the ship (for the button) has already been placed on the board, then shipToPlace = null
@@ -11,13 +8,13 @@ public class FleetPositionModel {
 	//Any clicks to the board always translates the currentShip and any clicks to the rotate button always rotate the currentShip
 	private Ship currentShip;
 	
-	private List<Ship> ships;
+	private ShipList placedShips;
 	private ShipFactory shipFactory;
 	private int test;
 	
 	public FleetPositionModel() {
 		this.test = 0;
-		this.ships = new ArrayList<Ship>();
+		this.placedShips = new ShipList();
 		this.shipToPlace = null;
 		this.currentShip = null;
 		this.shipFactory = new ShipFactory();
@@ -39,12 +36,12 @@ public class FleetPositionModel {
 		this.test = test;
 	}
 
-	public List<Ship> getShips() {
-		return ships;
+	public ShipList getPlacedShips() {
+		return placedShips;
 	}
 
-	public void setShips(List<Ship> ships) {
-		this.ships = ships;
+	public void setPlacedShips(ShipList ships) {
+		this.placedShips = ships;
 	}
 
 	public Ship getCurrentShip() {
@@ -57,6 +54,10 @@ public class FleetPositionModel {
 
 	public ShipFactory getShipFactory() {
 		return shipFactory;
+	}
+	
+	public boolean isAllShipsPlaced() {
+		return this.placedShips.size() >= 5;
 	}
 	
 }

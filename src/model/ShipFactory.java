@@ -3,6 +3,7 @@ package model;
 import model.Ship;
 
 import java.awt.Point;
+import java.util.Random;
 
 
 
@@ -122,5 +123,48 @@ public class ShipFactory{
 		}
 		return x;
 				
+	}
+	
+	public Ship buildRandomShip(Point head, ShipType type) {
+		Random r = new Random();
+		int randOrientation = r.nextInt(2); // 0 or 1
+		Point tail = null;
+
+		if (type == ShipType.AIRCRAFT_CARRIER) {
+			if (randOrientation == 1) {
+				tail = new Point(head.x+5, head.y);
+	    	} else {
+	    		tail = new Point(head.x, head.y+5);
+	    	}
+			return buildAircraftCarrier(head, tail);
+		} else if (type == ShipType.BATTLESHIP) {
+			if (randOrientation == 1) {
+				tail = new Point(head.x+4, head.y);
+	    	} else {
+	    		tail = new Point(head.x, head.y+4);
+	    	}
+			return buildBattleship(head, tail);
+		} else if (type == ShipType.DESTROYER) {
+			if (randOrientation == 1) {
+				tail = new Point(head.x+3, head.y);
+	    	} else {
+	    		tail = new Point(head.x, head.y+3);
+	    	}
+			return buildDestroyer(head, tail);
+		} else if (type == ShipType.SUB) {
+			if (randOrientation == 1) {
+				tail = new Point(head.x+2, head.y);
+	    	} else {
+	    		tail = new Point(head.x, head.y+2);
+	    	}
+			return buildSub(head, tail);
+		} else {
+			if (randOrientation == 1) {
+				tail = new Point(head.x+1, head.y);
+	    	} else {
+	    		tail = new Point(head.x, head.y+1);
+	    	}
+			return buildPatrol(head, tail);
+		}
 	}
 }
