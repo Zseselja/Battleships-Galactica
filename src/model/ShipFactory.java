@@ -9,6 +9,9 @@ import java.util.Random;
 
 public class ShipFactory{
 	
+	/**
+	 * Build a horizontal AirCraft Carrier at the specified head.
+	 */
 	public Ship buildAircraftCarrier(Point head) {
 		Ship x = null;
 		try {
@@ -20,6 +23,9 @@ public class ShipFactory{
 		return x;		
 	}
 	
+	/**
+	 * Build an AirCraft Carrier at the specified head and tail.
+	 */
 	public Ship buildAircraftCarrier(Point head, Point tail) {
 		Ship x = null;
 		try {
@@ -31,6 +37,9 @@ public class ShipFactory{
 		return x;		
 	}
 	
+	/**
+	 * Build a horizontal Battleship at the specified head.
+	 */
 	public Ship buildBattleship(Point head) {
 		Ship x = null;
 		try {
@@ -43,6 +52,9 @@ public class ShipFactory{
 				
 	}
 	
+	/**
+	 * Build a Battleship at the specified head and tail.
+	 */
 	public Ship buildBattleship(Point head, Point tail) {
 		Ship x = null;
 		try {
@@ -55,6 +67,9 @@ public class ShipFactory{
 				
 	}
 	
+	/**
+	 * Build a horizontal Destroyer at the specified head.
+	 */
 	public Ship buildDestroyer(Point head) {
 		Ship x = null;
 		try {
@@ -67,6 +82,9 @@ public class ShipFactory{
 				
 	}
 	
+	/**
+	 * Build a Destroyer at the specified head and tail.
+	 */
 	public Ship buildDestroyer(Point head, Point tail) {
 		Ship x = null;
 		try {
@@ -79,6 +97,9 @@ public class ShipFactory{
 				
 	}
 	
+	/**
+	 * Build a horizontal Sub at the specified head.
+	 */
 	public Ship buildSub(Point head) {
 		Ship x = null;
 		try {
@@ -90,6 +111,9 @@ public class ShipFactory{
 		return x;		
 	}
 	
+	/**
+	 * Build a Sub at the specified head and tail.
+	 */
 	public Ship buildSub(Point head, Point tail) {
 		Ship x = null;
 		try {
@@ -101,6 +125,9 @@ public class ShipFactory{
 		return x;		
 	}
 	
+	/**
+	 * Build a horizontal Patrol at the specified head.
+	 */
 	public Ship buildPatrol(Point head) {
 		Ship x = null;
 		try {
@@ -113,6 +140,9 @@ public class ShipFactory{
 				
 	}
 	
+	/**
+	 * Build a Patrol at the specified head and tail.
+	 */
 	public Ship buildPatrol(Point head, Point tail) {
 		Ship x = null;
 		try {
@@ -125,7 +155,10 @@ public class ShipFactory{
 				
 	}
 	
-	public Ship buildRandomShip(Point head, ShipType type) {
+	/**
+	 * Build a ship of the specified type at the head with a randomized orientation
+	 */
+	public Ship buildRandomShipOfType(ShipType type, Point head) {
 		Random r = new Random();
 		int randOrientation = r.nextInt(2); // 0 or 1
 		Point tail = null;
@@ -133,7 +166,7 @@ public class ShipFactory{
 		if (type == ShipType.AIRCRAFT_CARRIER) {
 			if (randOrientation == 1) {
 				tail = new Point(head.x+5, head.y);
-	    	} else {
+			} else {
 	    		tail = new Point(head.x, head.y+5);
 	    	}
 			return buildAircraftCarrier(head, tail);

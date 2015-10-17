@@ -270,7 +270,7 @@ public class FleetPositionController {
 	        	int randY = r.nextInt(FleetPositionView.getBoardPanelMaxRows());
 	        	
 	        	Point head = new Point(randX, randY);
-	    		Ship ship = factory.buildRandomShip(head, type);
+	    		Ship ship = factory.buildRandomShipOfType(type, head);
 	    		if (ship.getTail().x >= FleetPositionView.getBoardPanelMaxCols() || ship.getTail().y >= FleetPositionView.getBoardPanelMaxRows()) {
 	    			outOfBoard = true;
 	    		}
