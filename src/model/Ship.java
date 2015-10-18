@@ -5,7 +5,7 @@ import java.awt.Point;
 
 public class Ship {
 	private ShipType type;
-	private boolean[] health;
+	private int health;
 	
 	private Point head;
 	private Point tail;
@@ -19,11 +19,7 @@ public class Ship {
 	 */
 	public Ship(ShipType type, int size , Point head, Point tail) throws Exception {
 		this.type = type;
-		health = new boolean[size];
-		
-		for (int i = 0 ; i < size ; i++) {
-			health[i] = true;
-		}
+		this.health = size;
 		
 		// Validate that the ship dimensions are 1*x or x*1
 		boolean validShip = false;
@@ -51,20 +47,20 @@ public class Ship {
 	 */
 	public Ship(ShipType type, int size, Point head) throws Exception {
 		this.type = type;
-		health = new boolean[size];
-		
-		for (int i = 0; i < size; i++) {
-			health[i] = true;
-		}
+		this.health = size;
 		
 		this.head = head;
 		this.tail = new Point(head.x+size-1, head.y);
 	}
-			
-	public boolean[] getHealth(){
-		return this.health;
+	
+	public void decreaseHealth() {
+		this.health = this.health - 1;
 	}
 	
+	public boolean isSunk() {
+		return this.health == 0;
+	}
+
 	public Point getHead(){
 		return this.head;
 	}
@@ -97,15 +93,21 @@ public class Ship {
 	* hits a ship on the board or not. 
 	*/
 	public boolean intersects(Point hit) {
-		if ((this.head.x >= hit.x) && (this.tail.x <= hit.x)) {
-			if ((this.head.y >= hit.y) && (this.tail.y <= hit.y)) {
-				return true;
-			} else {
-				return false;
+		boolean intersection = false;
+		if (this.isVertical()) {
+			if (hit.x == this.head.x) {
+				if (hit.y >= this.head.y && hit.y <= this.tail.y) {
+					intersection = true;
+				}
 			}
 		} else {
-			return false;
+			if (hit.y == this.head.y) {
+				if (hit.x >= this.head.x && hit.x <= this.tail.x) {
+					intersection = true;
+				}
+			}
 		}
+		return intersection;
 	}
 	
 	public void translate(int dx, int dy) {

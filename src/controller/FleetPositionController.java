@@ -15,6 +15,7 @@ import model.Ship;
 import model.ShipFactory;
 import model.ShipList;
 import model.ShipType;
+import view.BoardConstants;
 import view.FleetPositionView;
 
 public class FleetPositionController {
@@ -60,8 +61,8 @@ public class FleetPositionController {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				
-				int col = e.getX()/FleetPositionView.getBoardPanelCellSize();
-				int row = e.getY()/FleetPositionView.getBoardPanelCellSize();
+				int col = e.getX()/FleetPositionView.getBoardCellSize();
+				int row = e.getY()/FleetPositionView.getBoardCellSize();
 				
 				if (model.getShipToPlace() != null) {
 					/*
@@ -221,14 +222,14 @@ public class FleetPositionController {
     }
     
     private boolean isPointInBoard(Point p) {
-    	if (p.x > FleetPositionView.getBoardPanelMaxCols()-1
-    			|| p.y > FleetPositionView.getBoardPanelMaxRows()-1) {
+    	if (p.x > BoardConstants.MAX_COLS-1
+    			|| p.y > BoardConstants.MAX_ROWS-1) {
     		return false;
     	}
     	return true;
     }
     
-    public List<Ship> getCorrectlyPlacedShips() {
+    public ShipList getCorrectlyPlacedShips() {
 
     	if (model.isAllShipsPlaced()) {
     		if (!model.getPlacedShips().isAnyShipIntersecting()) {
@@ -247,7 +248,7 @@ public class FleetPositionController {
     	}
     }
     
-    public List<Ship> generateComputerShips() {
+    public ShipList generateComputerShips() {
     	ShipList placedShips = new ShipList();
     	List<ShipType> shipsToBuild = new ArrayList<ShipType>();
     	shipsToBuild.add(ShipType.AIRCRAFT_CARRIER);
@@ -266,12 +267,12 @@ public class FleetPositionController {
     			intersection = false;
     			outOfBoard = false;
 	    		Random r = new Random();
-	        	int randX = r.nextInt(FleetPositionView.getBoardPanelMaxCols());
-	        	int randY = r.nextInt(FleetPositionView.getBoardPanelMaxRows());
+	        	int randX = r.nextInt(BoardConstants.MAX_COLS);
+	        	int randY = r.nextInt(BoardConstants.MAX_ROWS);
 	        	
 	        	Point head = new Point(randX, randY);
 	    		Ship ship = factory.buildRandomShipOfType(type, head);
-	    		if (ship.getTail().x >= FleetPositionView.getBoardPanelMaxCols() || ship.getTail().y >= FleetPositionView.getBoardPanelMaxRows()) {
+	    		if (ship.getTail().x >= BoardConstants.MAX_COLS || ship.getTail().y >= BoardConstants.MAX_ROWS) {
 	    			outOfBoard = true;
 	    		}
 	    		

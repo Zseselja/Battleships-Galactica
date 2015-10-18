@@ -23,7 +23,7 @@ public class ShipList extends ArrayList<Ship> {
 		List<Point> points = new ArrayList<Point>();
 		
 		for (Ship s: this) {
-			if (s.isVertical()) {
+		    if (s.isVertical()) {
 				int col = s.getHead().x;
 				int row = s.getHead().y;
 				int endRow = s.getTail().y;
@@ -54,5 +54,44 @@ public class ShipList extends ArrayList<Ship> {
 		}
 		
 		return false;
+	}
+	
+	public boolean intersects(Point hit) {
+		boolean intersection = false;
+		for (Ship s: this) {
+			if (s.isVertical()) {
+				if (hit.x == s.getHead().x) {
+					if (hit.y >= s.getHead().y && hit.y <= s.getTail().y) {
+						intersection = true;
+					}
+				}
+			} else {
+				if (hit.y == s.getHead().y) {
+					if (hit.x >= s.getHead().x && hit.x <= s.getTail().x) {
+						intersection = true;
+					}
+				}
+			}
+		}
+		return intersection;
+	}
+	
+	public Ship intersectsShip(Point hit) {
+		for (Ship s: this) {
+			if (s.isVertical()) {
+				if (hit.x == s.getHead().x) {
+					if (hit.y >= s.getHead().y && hit.y <= s.getTail().y) {
+						return s;
+					}
+				}
+			} else {
+				if (hit.y == s.getHead().y) {
+					if (hit.x >= s.getHead().x && hit.x <= s.getTail().x) {
+						return s;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

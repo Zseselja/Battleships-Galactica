@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.FleetPositionModel;
 import model.GamePlayModel;
+import model.ShipList;
 import view.FleetPositionView;
 import view.GamePlayView;
 import view.LeaderBoardView;
@@ -83,10 +84,14 @@ public class GameController
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				List<Ship> ships = fleetPositionController.getCorrectlyPlacedShips();
-				if (ships != null) {
-					launchGamePlay();
+				ShipList playerShips = fleetPositionController.getCorrectlyPlacedShips();
+				if (playerShips != null) {
+					ShipList computerShips = fleetPositionController.generateComputerShips();
+					launchGamePlay(playerShips, computerShips);
 				}
+				/*ShipList playerShips = fleetPositionController.generateComputerShips();
+				ShipList computerShips = fleetPositionController.generateComputerShips();
+				launchGamePlay(playerShips, computerShips);*/
 			}
 		});
 		
@@ -120,11 +125,11 @@ public class GameController
 	/**
 	 * Instantiates the GamePlayView, binds to its panel-changing actions, and applies it to the window
 	 */
-	public void launchGamePlay() {
+	public void launchGamePlay(ShipList playerShips, ShipList computerShips) {
 		System.out.println("Navigating to Game Play View");
 		
 		GamePlayView gamePlayView = new GamePlayView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
-		GamePlayModel gamePlayModel = new GamePlayModel();
+		GamePlayModel gamePlayModel = new GamePlayModel(playerShips, computerShips);
 		this.gamePlayController = new GamePlayController(gamePlayModel, gamePlayView);
 		
 		this.window.add(gamePlayView, Views.GAME_PLAY_VIEW);

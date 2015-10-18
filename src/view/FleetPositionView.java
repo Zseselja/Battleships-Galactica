@@ -16,9 +16,7 @@ public class FleetPositionView extends JPanel {
 	
 	private static final int BOARD_PANEL_Y_OFFSET = 100;
 	private static final int BOARD_PANEL_X_OFFSET = 100;			
-	private static final int BOARD_PANEL_MAX_ROWS = 10;
-	private static final int BOARD_PANEL_MAX_COLS = 10;
-	private static final int BOARD_PANEL_CELL_SIZE = 50;
+	private static final int BOARD_CELL_SIZE = 50;
 	
 	private JTextField textField;
 	private JLabel header;
@@ -65,8 +63,8 @@ public class FleetPositionView extends JPanel {
 		
 		this.boardPanel = new BoardPanel();
 		// Not sure why, but have to add +1 or else the right and bottom border don't show
-		int boardWidth = (BOARD_PANEL_MAX_ROWS*BOARD_PANEL_CELL_SIZE)+1;
-		int boardHeight = (BOARD_PANEL_MAX_COLS*BOARD_PANEL_CELL_SIZE)+1;
+		int boardWidth = (BoardConstants.MAX_COLS*BOARD_CELL_SIZE)+1;
+		int boardHeight = (BoardConstants.MAX_ROWS*BOARD_CELL_SIZE)+1;
 		this.boardPanel.setBounds(BOARD_PANEL_X_OFFSET, BOARD_PANEL_Y_OFFSET, boardWidth, boardHeight);
 		this.add(this.boardPanel);
 		
@@ -91,11 +89,11 @@ public class FleetPositionView extends JPanel {
 		this.add(this.patrolButton);
 		
 		
-		board = new BoardPiece[BOARD_PANEL_MAX_COLS][BOARD_PANEL_MAX_ROWS];
-		for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
-            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
-                BoardPiece cell = new BoardPiece(col*BOARD_PANEL_CELL_SIZE, row*BOARD_PANEL_CELL_SIZE, 
-                		BOARD_PANEL_CELL_SIZE, BOARD_PANEL_CELL_SIZE, Color.GRAY);
+		board = new BoardPiece[BoardConstants.MAX_COLS][BoardConstants.MAX_ROWS];
+		for (int col = 0; col < BoardConstants.MAX_COLS; col++) {
+            for (int row = 0; row < BoardConstants.MAX_ROWS; row++) {
+                BoardPiece cell = new BoardPiece(col*BOARD_CELL_SIZE, row*BOARD_CELL_SIZE, 
+                		BOARD_CELL_SIZE, BOARD_CELL_SIZE, Color.GRAY);
                 board[col][row] = cell;
             }
         }
@@ -113,8 +111,8 @@ public class FleetPositionView extends JPanel {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
 			
-			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
-	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+			for (int col = 0; col < BoardConstants.MAX_COLS; col++) {
+	            for (int row = 0; row < BoardConstants.MAX_ROWS; row++) {
 	            	g2d.setColor(board[col][row].getColor());
 	            	if (board[col][row].getColor() != Color.GRAY) {
 	            		g2d.fill(board[col][row]);
@@ -125,8 +123,8 @@ public class FleetPositionView extends JPanel {
 	        }
 			
 			//erase Board data after each paint
-			for (int col = 0; col < BOARD_PANEL_MAX_COLS; col++) {
-	            for (int row = 0; row < BOARD_PANEL_MAX_ROWS; row++) {
+			for (int col = 0; col < BoardConstants.MAX_COLS; col++) {
+	            for (int row = 0; row < BoardConstants.MAX_ROWS; row++) {
 	            	board[col][row].setColor(Color.GRAY);
 	            }
 	        }
@@ -174,16 +172,8 @@ public class FleetPositionView extends JPanel {
 		return BOARD_PANEL_X_OFFSET;
 	}
 
-	public static int getBoardPanelMaxRows() {
-		return BOARD_PANEL_MAX_ROWS;
-	}
-
-	public static int getBoardPanelMaxCols() {
-		return BOARD_PANEL_MAX_COLS;
-	}
-
-	public static int getBoardPanelCellSize() {
-		return BOARD_PANEL_CELL_SIZE;
+	public static int getBoardCellSize() {
+		return BOARD_CELL_SIZE;
 	}
 
 	public JButton getAircraftCarrierButton() {
