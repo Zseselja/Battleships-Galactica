@@ -3,7 +3,6 @@ package controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import model.FleetPositionModel;
 import model.GamePlayModel;
@@ -14,7 +13,6 @@ import view.LeaderBoardView;
 import view.StartView;
 import view.Views;
 import view.Window;
-import model.Ship;
 
 public class GameController 
 {

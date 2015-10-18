@@ -3,18 +3,14 @@ package controller;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.util.Random;
 
-import org.omg.CORBA.ShortSeqHelper;
 
 import model.GamePlayModel;
 import model.Player;
 import model.Ship;
-import model.ShipList;
 import model.Shot;
 import view.BoardConstants;
-import view.BoardPiece;
 import view.GamePlayView;
 
 public class GamePlayController {
@@ -99,7 +95,7 @@ public class GamePlayController {
 
 				Ship ship = computer.getShips().intersectsShip(shot);
 				if (ship == null) {
-					System.out.println("Miss");
+					System.out.println("You Missed");
 					boolean fireAShot = true;
 					while (fireAShot) {
 						do {
@@ -118,7 +114,7 @@ public class GamePlayController {
 						}
 					}
 				} else {
-					System.out.println("Hit a ship");
+					System.out.println("You hit a ship");
 					ship.decreaseHealth();
 					shot.setHit(true);
 				}
