@@ -76,7 +76,7 @@ public class ShipList extends ArrayList<Ship> {
 		return intersection;
 	}
 	
-	public Ship intersectsShip(Point hit) {
+	public Ship getIntersectingShip(Point hit) {
 		for (Ship s: this) {
 			if (s.isVertical()) {
 				if (hit.x == s.getHead().x) {
@@ -93,5 +93,14 @@ public class ShipList extends ArrayList<Ship> {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isAllShipsSunk() {
+		for (Ship s: this) {
+			if (!s.isSunk()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

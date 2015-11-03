@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -263,9 +264,11 @@ public class FleetPositionController {
     		ShipType type = shipsToBuild.remove(0);
     		boolean intersection;
     		boolean outOfBoard;
+    		boolean touching;
     		do {
     			intersection = false;
     			outOfBoard = false;
+    			touching = false;
 	    		Random r = new Random();
 	        	int randX = r.nextInt(BoardConstants.MAX_COLS);
 	        	int randY = r.nextInt(BoardConstants.MAX_ROWS);
@@ -282,11 +285,51 @@ public class FleetPositionController {
 		    			intersection = true;
 		    			placedShips.remove(ship);
 		    		}
+		    		if (isTouching(placedShips)) {
+		    			touching = true;
+		    			placedShips.remove(ship);
+		    		}
 	    		}
-    		} while (intersection || outOfBoard);
+    		} while (intersection || outOfBoard || touching);
     	}
 
     	return placedShips;
+    }
+    
+    private boolean isTouching(ShipList ships) {
+    	List<Point> points = new ArrayList<Point>();
+    	for (Ship s: ships) {
+    		if (s.isVertical()) {
+    			
+    		} else {
+    			if (s.getHead().y >= 1) {
+					for (int i = s.getHead().x-1; i <= s.getTail().x+1; i++) {
+						points.add(new Point(i, s.getHead().y-1));
+					}
+    			}
+    			
+    			if (s.getHead().y <= BoardConstants.MAX_ROWS-2) {
+					for (int i = s.getHead().x-1; i <= s.getTail().x+1; i++) {
+						points.add(new Point(i, s.getHead().y+1));
+					}
+    			}
+    			
+    			if (s.getHead().x >= 1) {
+    				points.add(new Point(s.getHead().x-1, s.getHead().y));
+    			}
+    			
+    			if (s.getHead().x <= BoardConstants.MAX_COLS-2) {
+    				points.add(new Point(s.getHead().x+1, s.getHead().y));
+    			}
+    		}
+    	}
+    	
+    	for (Point p: points) {
+    		if (ships.intersects(p)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
 }

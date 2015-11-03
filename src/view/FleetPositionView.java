@@ -4,18 +4,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class FleetPositionView extends JPanel {
 	private static final int MAIN_BUTTON_WIDTH = 200;
 	private static final int MAIN_BUTTON_HEIGHT = 75;
 	
 	private static final int BOARD_PANEL_Y_OFFSET = 100;
-	private static final int BOARD_PANEL_X_OFFSET = 100;			
+	private static final int BOARD_PANEL_X_OFFSET = 50;			
 	private static final int BOARD_CELL_SIZE = 50;
 	
 	private JTextField textField;
@@ -36,8 +40,8 @@ public class FleetPositionView extends JPanel {
 		this.setLayout(null);
 		
 		this.header = new JLabel("Choose the Position of your Fleet");
-		this.header.setFont(new Font("Arial Black", Font.PLAIN, 24));
-		this.header.setBounds(100, 0, 500, 100);
+		this.header.setFont(new Font("Impact", Font.PLAIN, 24));
+		this.header.setBounds(50, 50, 500, 24);
 		this.add(this.header);
 		
 		/*this.textField = new JTextField("Choose the Position of your fleet");
@@ -57,8 +61,10 @@ public class FleetPositionView extends JPanel {
 		this.doneButton.setBounds(doneButtonX, doneButtonY, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
 		this.add(this.doneButton);
 		
-		this.rotateButton = new JButton("Rotate");
-		this.rotateButton.setBounds(600, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.rotateButton = new JButton();
+		this.rotateButton.setBounds(600, 0, 64, 64);
+		this.rotateButton.setIcon(new ImageIcon("images/rotate_btn.png"));
+		this.rotateButton.setBorder(BorderFactory.createEmptyBorder());
 		this.add(this.rotateButton);
 		
 		this.boardPanel = new BoardPanel();
@@ -68,24 +74,34 @@ public class FleetPositionView extends JPanel {
 		this.boardPanel.setBounds(BOARD_PANEL_X_OFFSET, BOARD_PANEL_Y_OFFSET, boardWidth, boardHeight);
 		this.add(this.boardPanel);
 		
-		this.aircraftCarrierButton = new JButton("Aircraft Carrier");
-		this.aircraftCarrierButton.setBounds(800, 0, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.aircraftCarrierButton = new JButton();
+		this.aircraftCarrierButton.setBounds(750, 100, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.aircraftCarrierButton.setIcon(new ImageIcon("images/ac_btn.png"));
+		this.aircraftCarrierButton.setAlignmentX(SwingConstants.CENTER);
 		this.add(this.aircraftCarrierButton);
 		
-		this.battleshipButton = new JButton("Battleship");
-		this.battleshipButton.setBounds(800, 100, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.battleshipButton = new JButton();
+		this.battleshipButton.setBounds(750, 200, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.battleshipButton.setIcon(new ImageIcon("images/bs_btn.png"));
+		this.battleshipButton.setAlignmentX(SwingConstants.CENTER);
 		this.add(this.battleshipButton);
 		
-		this.destroyerButton = new JButton("Destroyer");
-		this.destroyerButton.setBounds(800, 200, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.destroyerButton = new JButton();
+		this.destroyerButton.setBounds(750, 300, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.destroyerButton.setIcon(new ImageIcon("images/ds_btn.png"));
+		this.destroyerButton.setAlignmentX(SwingConstants.CENTER);
 		this.add(this.destroyerButton);
 		
-		this.subButton = new JButton("Sub");
-		this.subButton.setBounds(800, 300, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.subButton = new JButton();
+		this.subButton.setBounds(750, 400, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.subButton.setIcon(new ImageIcon("images/sub_btn.png"));
+		this.subButton.setAlignmentX(SwingConstants.CENTER);
 		this.add(this.subButton);
 		
-		this.patrolButton = new JButton("Patrol");
-		this.patrolButton.setBounds(800, 400, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.patrolButton = new JButton();
+		this.patrolButton.setBounds(750, 500, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.patrolButton.setIcon(new ImageIcon("images/pt_btn.png"));
+		this.patrolButton.setAlignmentX(SwingConstants.CENTER);
 		this.add(this.patrolButton);
 		
 		

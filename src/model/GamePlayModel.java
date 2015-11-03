@@ -2,13 +2,13 @@ package model;
 
 public class GamePlayModel {
 	private Player player;
-	private Player computer;
+	private Computer computer;
 
 	public GamePlayModel(ShipList playerShips, ShipList computerShips) {
 		this.player = new Player();
 		this.player.setShips(playerShips);
 		
-		this.computer = new Player();
+		this.computer = new Computer();
 		this.computer.setShips(computerShips);
 	}
 
@@ -20,11 +20,11 @@ public class GamePlayModel {
 		this.player = player;
 	}
 
-	public Player getComputer() {
+	public Computer getComputer() {
 		return computer;
 	}
 
-	public void setComputer(Player computer) {
+	public void setComputer(Computer computer) {
 		this.computer = computer;
 	}
 	

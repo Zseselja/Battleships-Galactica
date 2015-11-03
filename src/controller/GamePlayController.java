@@ -3,12 +3,14 @@ package controller;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import java.util.Random;
 
-
+import model.Computer;
 import model.GamePlayModel;
 import model.Player;
 import model.Ship;
+import model.ShipList;
 import model.Shot;
 import view.BoardConstants;
 import view.GamePlayView;
@@ -32,7 +34,7 @@ public class GamePlayController {
 	}
 	
 	private void renderComputerBoard() {
-		for (Shot s: this.model.getComputer().getShots()) {
+		for (Shot s: this.model.getPlayer().getShots()) {
 			if (s.isHit()) {
 				this.view.getComputerBoard()[s.x][s.y].setColor(Color.BLACK);
 			} else {
@@ -60,7 +62,7 @@ public class GamePlayController {
 			}
 		}
 		
-		for (Shot s: this.model.getPlayer().getShots()) {
+		for (Shot s: this.model.getComputer().getShots()) {
 			if (s.isHit()) {
 				this.view.getPlayerBoard()[s.x][s.y].setColor(Color.BLACK);
 			} else {
@@ -80,30 +82,38 @@ public class GamePlayController {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				Player computer = model.getComputer();
+				Computer computer = model.getComputer();
 				Player player = model.getPlayer();
+				
+				ShipList computerShips = computer.getShips();
+				ShipList playerShips = player.getShips();
+				
+				List<Shot> computerShots = computer.getShots();
+				List<Shot> playerShots = player.getShots();
+				
 				int col = e.getX()/GamePlayView.getBoardCellSize();
 				int row = e.getY()/GamePlayView.getBoardCellSize();
 				Shot shot = new Shot(col, row);
 				
-				if (computer.getShots().contains(shot)) {
+				if (playerShots.contains(shot)) {
 					System.out.println("Already shot there");
 					return;
 				} else {
-					computer.getShots().add(shot);
+					playerShots.add(shot);
 				}
 
-				Ship ship = computer.getShips().intersectsShip(shot);
+				Ship ship = computerShips.getIntersectingShip(shot);
 				if (ship == null) {
 					System.out.println("You Missed");
+					
 					boolean fireAShot = true;
 					while (fireAShot) {
 						do {
 							shot = generateRandomShot();
-						} while (player.getShots().contains(shot));
-						player.getShots().add(shot);
+						} while (computerShots.contains(shot));
+						computerShots.add(shot);
 						
-						ship = player.getShips().intersectsShip(shot);
+						ship = playerShips.getIntersectingShip(shot);
 						if (ship == null) {
 							System.out.println("Computer Missed");
 							fireAShot = false;
@@ -111,14 +121,21 @@ public class GamePlayController {
 							System.out.println("Computer Hit");
 							ship.decreaseHealth();
 							shot.setHit(true);
+							if (playerShips.isAllShipsSunk()) {
+								//Win sequence
+								System.out.println("Computer wins");
+							}
 						}
 					}
 				} else {
 					System.out.println("You hit a ship");
 					ship.decreaseHealth();
 					shot.setHit(true);
+					if (computerShips.isAllShipsSunk()) {
+						//Win sequence
+						System.out.println("Player wins");
+					}
 				}
-				
 				renderView();
 			}
 
