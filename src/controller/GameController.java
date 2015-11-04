@@ -82,14 +82,14 @@ public class GameController
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ShipList playerShips = fleetPositionController.getCorrectlyPlacedShips();
+				/*ShipList playerShips = fleetPositionController.getCorrectlyPlacedShips();
 				if (playerShips != null) {
 					ShipList computerShips = fleetPositionController.generateComputerShips();
 					launchGamePlay(playerShips, computerShips);
-				}
-				/*ShipList playerShips = fleetPositionController.generateComputerShips();
+				}*/
+				ShipList playerShips = fleetPositionController.generateComputerShips();
 				ShipList computerShips = fleetPositionController.generateComputerShips();
-				launchGamePlay(playerShips, computerShips);*/
+				launchGamePlay(playerShips, computerShips);
 			}
 		});
 		

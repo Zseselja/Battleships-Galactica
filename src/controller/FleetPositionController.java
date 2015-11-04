@@ -264,11 +264,9 @@ public class FleetPositionController {
     		ShipType type = shipsToBuild.remove(0);
     		boolean intersection;
     		boolean outOfBoard;
-    		boolean touching;
     		do {
     			intersection = false;
     			outOfBoard = false;
-    			touching = false;
 	    		Random r = new Random();
 	        	int randX = r.nextInt(BoardConstants.MAX_COLS);
 	        	int randY = r.nextInt(BoardConstants.MAX_ROWS);
@@ -285,17 +283,13 @@ public class FleetPositionController {
 		    			intersection = true;
 		    			placedShips.remove(ship);
 		    		}
-		    		if (isTouching(placedShips)) {
-		    			touching = true;
-		    			placedShips.remove(ship);
-		    		}
 	    		}
-    		} while (intersection || outOfBoard || touching);
+    		} while (intersection || outOfBoard);
     	}
 
     	return placedShips;
     }
-    
+    /*
     private boolean isTouching(ShipList ships) {
     	List<Point> points = new ArrayList<Point>();
     	for (Ship s: ships) {
@@ -330,6 +324,6 @@ public class FleetPositionController {
     		}
     	}
     	return false;
-    }
+    }*/
 
 }

@@ -1,17 +1,23 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GamePlayView extends JPanel {
-	private static final int BOARD_CELL_SIZE = 35;
-	private static final int PLAYER_BOARD_PANEL_Y_OFFSET = 100;
-	private static final int PLAYER_BOARD_PANEL_X_OFFSET = 100;
-	private static final int COMPUTER_BOARD_PANEL_Y_OFFSET = 100;
-	private static final int COMPUTER_BOARD_PANEL_X_OFFSET = 500;
+	private static final int BOARD_CELL_SIZE = 40;
+	private static final int PLAYER_BOARD_PANEL_Y_OFFSET = 150;
+	private static final int PLAYER_BOARD_PANEL_X_OFFSET = 50;
+	private static final int COMPUTER_BOARD_PANEL_Y_OFFSET = 150;
+	private static final int COMPUTER_BOARD_PANEL_X_OFFSET = 550;
 	
 	private JPanel playerBoardPanel;
 	private BoardPiece[][] playerBoard;
@@ -19,12 +25,34 @@ public class GamePlayView extends JPanel {
 	private JPanel computerBoardPanel;
 	private BoardPiece[][] computerBoard;
 	
+	private JLabel playerLabel;
+	private JLabel computerLabel;
+	
+	private BufferedImage background;
+	
 	public GamePlayView(int width, int height) {
 		this.setLayout(null);
 		
+		try {
+			this.background = ImageIO.read(new File("images/game_bg.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		this.playerLabel = new JLabel("Player");
+		this.playerLabel.setFont(new Font("Impact", Font.PLAIN, 24));
+		this.playerLabel.setBounds(50, 100, 200, 24);
+		this.add(this.playerLabel);
+		
+		this.computerLabel = new JLabel("Computer");
+		this.computerLabel.setFont(new Font("Impact", Font.PLAIN, 24));
+		this.computerLabel.setBounds(550, 100, 200, 24);
+		this.add(this.computerLabel);
+		
+		
 		this.playerBoardPanel = new PlayerBoardPanel();
-		int boardWidth = (BoardConstants.MAX_COLS*BOARD_CELL_SIZE)+1;
-		int boardHeight = (BoardConstants.MAX_ROWS*BOARD_CELL_SIZE)+1;
+		int boardWidth = (BoardConstants.MAX_COLS*BOARD_CELL_SIZE);
+		int boardHeight = (BoardConstants.MAX_ROWS*BOARD_CELL_SIZE);
 		this.playerBoardPanel.setBounds(PLAYER_BOARD_PANEL_X_OFFSET, PLAYER_BOARD_PANEL_Y_OFFSET, boardWidth, boardHeight);
 		this.add(this.playerBoardPanel);
 		
@@ -49,6 +77,12 @@ public class GamePlayView extends JPanel {
                 this.computerBoard[col][row] = cell;
             }
         }
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(background, 0, 0, null);
 	}
 	
 	private class PlayerBoardPanel extends JPanel {
