@@ -9,6 +9,7 @@ import model.GamePlayModel;
 import model.ShipList;
 import view.FleetPositionView;
 import view.GamePlayView;
+import view.GameResultsView;
 import view.LeaderBoardView;
 import view.StartView;
 import view.Views;
@@ -82,14 +83,14 @@ public class GameController
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				/*ShipList playerShips = fleetPositionController.getCorrectlyPlacedShips();
+				ShipList playerShips = fleetPositionController.getCorrectlyPlacedShips();
 				if (playerShips != null) {
 					ShipList computerShips = fleetPositionController.generateComputerShips();
 					launchGamePlay(playerShips, computerShips);
-				}*/
+				}/*
 				ShipList playerShips = fleetPositionController.generateComputerShips();
 				ShipList computerShips = fleetPositionController.generateComputerShips();
-				launchGamePlay(playerShips, computerShips);
+				launchGamePlay(playerShips, computerShips);*/
 			}
 		});
 		
@@ -130,9 +131,35 @@ public class GameController
 		GamePlayModel gamePlayModel = new GamePlayModel(playerShips, computerShips);
 		this.gamePlayController = new GamePlayController(gamePlayModel, gamePlayView);
 		
+		gamePlayView.getContinueButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				launchGameResults();
+			}
+		});
+		
 		this.window.add(gamePlayView, Views.GAME_PLAY_VIEW);
 		CardLayout layout = (CardLayout) window.getContentPane().getLayout();
 		layout.show(window.getContentPane(), Views.GAME_PLAY_VIEW);
+	}
+	
+	/**
+	 * Instantiates the GameResultsView, binds to its panel-changing actions, and applies it to the window
+	 */
+	public void launchGameResults() {
+		System.out.println("Navigating to Game Results View");
+		GameResultsView gameResultsView = new GameResultsView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
+
+		gameResultsView.getContinueButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				launchStart();
+			}
+		});
+		
+		this.window.add(gameResultsView, Views.GAME_RESULTS_VIEW);
+		CardLayout layout = (CardLayout) window.getContentPane().getLayout();
+		layout.show(window.getContentPane(), Views.GAME_RESULTS_VIEW);
 	}
 
 }

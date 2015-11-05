@@ -6,10 +6,12 @@ import java.util.List;
 public class Player {
 	private ShipList ships;
 	private List<Shot> shots;
+	private boolean win;
 	
 	public Player() {
 		this.ships = new ShipList();
 		this.shots = new ArrayList<Shot>();
+		this.win = false;
 	}
 
 	public ShipList getShips() {
@@ -27,4 +29,13 @@ public class Player {
 	public void setShots(List<Shot> shots) {
 		this.shots = shots;
 	}
+
+	public boolean isWin() {
+		return win;
+	}
+
+	public void setWin(boolean win) {
+		this.win = win;
+	}
+
 }

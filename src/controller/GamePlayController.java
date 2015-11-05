@@ -1,10 +1,14 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.Timer;
 
 import model.Computer;
 import model.GamePlayModel;
@@ -16,20 +20,73 @@ import view.BoardConstants;
 import view.GamePlayView;
 
 public class GamePlayController {
+	private static final int COMPUTER_TURN_DELAY = 250;
+	
 	private GamePlayModel model;
 	private GamePlayView view;
+	private Timer computerTurn;
 
 	public GamePlayController(GamePlayModel m, GamePlayView v) {
 		this.model = m;
 		this.view = v;
 		
+		setUpComputer();
 		setUpViewEvents();
 		renderView();
+	}
+	
+	private void setUpComputer() {
+		this.computerTurn = new Timer(COMPUTER_TURN_DELAY, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Computer computer = model.getComputer();
+				Player player = model.getPlayer();
+				ShipList playerShips = player.getShips();
+				
+				List<Shot> computerShots = computer.getShots();
+				boolean fireAShot = true;
+				Shot shot;
+				Ship ship;
+				while (fireAShot) {
+					do {
+						shot = generateRandomShot();
+					} while (computerShots.contains(shot));
+					computerShots.add(shot);
+					
+					ship = playerShips.getIntersectingShip(shot);
+					if (ship == null) {
+						System.out.println("Computer Missed");
+						fireAShot = false;
+					} else {
+						System.out.println("Computer Hit");
+						ship.decreaseHealth();
+						shot.setHit(true);
+						if (playerShips.isAllShipsSunk()) {
+							//Win sequence
+							System.out.println("Computer wins");
+							computer.setWin(true);
+						}
+					}
+				}
+				renderView();
+				computerTurn.stop();
+			}
+		});
 	}
 	
 	private void renderView() {
 		renderPlayerBoard();
 		renderComputerBoard();
+		
+		if (model.getPlayer().isWin()) {
+			view.getWinnerLabel().setText("Player Wins!!!");
+			view.getContinueButton().setVisible(true);
+		} else if (model.getComputer().isWin()) {
+			view.getWinnerLabel().setText("Computer Wins!!!");
+			view.getContinueButton().setVisible(true);
+		}
+		
 		this.view.repaint();
 	}
 	
@@ -82,13 +139,13 @@ public class GamePlayController {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				if (computerTurn.isRunning()) return;
 				Computer computer = model.getComputer();
 				Player player = model.getPlayer();
 				
-				ShipList computerShips = computer.getShips();
-				ShipList playerShips = player.getShips();
+				if (player.isWin() || computer.isWin()) return;
 				
-				List<Shot> computerShots = computer.getShots();
+				ShipList computerShips = computer.getShips();
 				List<Shot> playerShots = player.getShots();
 				
 				int col = e.getX()/GamePlayView.getBoardCellSize();
@@ -105,28 +162,7 @@ public class GamePlayController {
 				Ship ship = computerShips.getIntersectingShip(shot);
 				if (ship == null) {
 					System.out.println("You Missed");
-					
-					boolean fireAShot = true;
-					while (fireAShot) {
-						do {
-							shot = generateRandomShot();
-						} while (computerShots.contains(shot));
-						computerShots.add(shot);
-						
-						ship = playerShips.getIntersectingShip(shot);
-						if (ship == null) {
-							System.out.println("Computer Missed");
-							fireAShot = false;
-						} else {
-							System.out.println("Computer Hit");
-							ship.decreaseHealth();
-							shot.setHit(true);
-							if (playerShips.isAllShipsSunk()) {
-								//Win sequence
-								System.out.println("Computer wins");
-							}
-						}
-					}
+					computerTurn.start();
 				} else {
 					System.out.println("You hit a ship");
 					ship.decreaseHealth();
@@ -134,6 +170,7 @@ public class GamePlayController {
 					if (computerShips.isAllShipsSunk()) {
 						//Win sequence
 						System.out.println("Player wins");
+						player.setWin(true);
 					}
 				}
 				renderView();

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,6 +19,8 @@ public class GamePlayView extends JPanel {
 	private static final int PLAYER_BOARD_PANEL_X_OFFSET = 50;
 	private static final int COMPUTER_BOARD_PANEL_Y_OFFSET = 150;
 	private static final int COMPUTER_BOARD_PANEL_X_OFFSET = 550;
+	private static final int MAIN_BUTTON_WIDTH = 200;
+	private static final int MAIN_BUTTON_HEIGHT = 75;
 	
 	private JPanel playerBoardPanel;
 	private BoardPiece[][] playerBoard;
@@ -29,6 +32,8 @@ public class GamePlayView extends JPanel {
 	private JLabel computerLabel;
 	
 	private BufferedImage background;
+	private JButton continueButton;
+	private JLabel winnerLabel;
 	
 	public GamePlayView(int width, int height) {
 		this.setLayout(null);
@@ -39,6 +44,19 @@ public class GamePlayView extends JPanel {
 			e.printStackTrace();
 		}
 		
+		this.continueButton = new JButton("Continue");
+		this.continueButton.setFont(new Font("Impact", Font.PLAIN, 20));
+		int continueButtonX = (width)-(MAIN_BUTTON_WIDTH)-25;
+		int continueButtonY = (height)-(MAIN_BUTTON_HEIGHT)-25;
+		this.continueButton.setBounds(continueButtonX, continueButtonY, MAIN_BUTTON_WIDTH, MAIN_BUTTON_HEIGHT);
+		this.continueButton.setVisible(false);
+		this.add(this.continueButton);
+		
+		this.winnerLabel = new JLabel();
+		this.winnerLabel.setFont(new Font("Impact", Font.PLAIN, 36));
+		this.winnerLabel.setBounds(50, 50, 300, 36);
+		this.add(this.winnerLabel);
+		
 		this.playerLabel = new JLabel("Player");
 		this.playerLabel.setFont(new Font("Impact", Font.PLAIN, 24));
 		this.playerLabel.setBounds(50, 100, 200, 24);
@@ -48,7 +66,6 @@ public class GamePlayView extends JPanel {
 		this.computerLabel.setFont(new Font("Impact", Font.PLAIN, 24));
 		this.computerLabel.setBounds(550, 100, 200, 24);
 		this.add(this.computerLabel);
-		
 		
 		this.playerBoardPanel = new PlayerBoardPanel();
 		int boardWidth = (BoardConstants.MAX_COLS*BOARD_CELL_SIZE);
@@ -167,4 +184,12 @@ public class GamePlayView extends JPanel {
 		return BOARD_CELL_SIZE;
 	}
 
+	public JButton getContinueButton() {
+		return continueButton;
+	}
+
+	public JLabel getWinnerLabel() {
+		return winnerLabel;
+	}
+	
 }
