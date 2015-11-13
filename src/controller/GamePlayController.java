@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -45,14 +46,26 @@ public class GamePlayController {
 				ShipList playerShips = player.getShips();
 				
 				List<Shot> computerShots = computer.getShots();
+				List<Shot> priorityShots = computer.getPriorityShots(); 
 				boolean fireAShot = true;
 				Shot shot;
 				Ship ship;
 				while (fireAShot) {
-					do {
-						shot = generateRandomShot();
-					} while (computerShots.contains(shot));
-					computerShots.add(shot);
+					if (priorityShots.isEmpty()) {
+						//Generate a random shot
+						do {
+							shot = generateRandomShot();
+						} while (computerShots.contains(shot));
+						computerShots.add(shot);
+						
+					} else {
+						//Fire priority shot
+						shot = computer.getPriorityShot();
+						if (shot != null) {
+							computer.getPriorityShots().remove(0);
+							computerShots.add(shot);
+						}
+					}
 					
 					ship = playerShips.getIntersectingShip(shot);
 					if (ship == null) {
@@ -62,13 +75,24 @@ public class GamePlayController {
 						System.out.println("Computer Hit");
 						ship.decreaseHealth();
 						shot.setHit(true);
+						
+						List<Shot> tempPriorityShots = generatePriorityShots(ship, shot);
+						for (Shot p: tempPriorityShots) {
+							if (!computerShots.contains(p)) {
+								priorityShots.add(p);
+							}
+						}
+						
 						if (playerShips.isAllShipsSunk()) {
 							//Win sequence
 							System.out.println("Computer wins");
 							computer.setWin(true);
 						}
+						
+						
 					}
 				}
+
 				renderView();
 				computerTurn.stop();
 			}
@@ -193,5 +217,49 @@ public class GamePlayController {
 		int y = r.nextInt(BoardConstants.MAX_ROWS);
 		
 		return new Shot(x, y);
+	}
+	
+	private List<Shot> generatePriorityShots(Ship ship, Shot shot) {
+		List<Shot> priorityShots = new ArrayList<Shot>();
+		if (ship.getNumHits() > 1) {
+			if (ship.isVertical()) {
+				if (shot.y > 0) {
+					Shot pShot = new Shot(shot.x, shot.y-1);
+					priorityShots.add(pShot);
+				}
+				if (shot.y < BoardConstants.MAX_ROWS-1) {
+					Shot pShot = new Shot(shot.x, shot.y+1);
+					priorityShots.add(pShot);
+				}
+			} else {
+				if (shot.x > 0) {
+					Shot pShot = new Shot(shot.x-1, shot.y);
+					priorityShots.add(pShot);
+				}
+				if (shot.x < BoardConstants.MAX_COLS-1) {
+					Shot pShot = new Shot(shot.x+1, shot.y);
+					priorityShots.add(pShot);
+				}
+			}
+		} else {
+			if (shot.y > 0) {
+				Shot pShot = new Shot(shot.x, shot.y-1);
+				priorityShots.add(pShot);
+			}
+			if (shot.y < BoardConstants.MAX_ROWS-1) {
+				Shot pShot = new Shot(shot.x, shot.y+1);
+				priorityShots.add(pShot);
+			}
+			if (shot.x > 0) {
+				Shot pShot = new Shot(shot.x-1, shot.y);
+				priorityShots.add(pShot);
+			}
+			if (shot.x < BoardConstants.MAX_COLS-1) {
+				Shot pShot = new Shot(shot.x+1, shot.y);
+				priorityShots.add(pShot);
+			}
+		}
+		
+		return priorityShots;
 	}
 }

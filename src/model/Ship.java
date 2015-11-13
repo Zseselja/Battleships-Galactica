@@ -5,6 +5,7 @@ import java.awt.Point;
 
 public class Ship {
 	private ShipType type;
+	private int fullHealth;
 	private int health;
 	
 	private Point head;
@@ -20,6 +21,7 @@ public class Ship {
 	public Ship(ShipType type, int size , Point head, Point tail) throws Exception {
 		this.type = type;
 		this.health = size;
+		this.fullHealth = size;
 		
 		// Validate that the ship dimensions are 1*x or x*1
 		boolean validShip = false;
@@ -117,6 +119,11 @@ public class Ship {
 
 	public ShipType getType() {
 		return type;
+	}
+	
+	//return how many times this ship has been hit.
+	public int getNumHits() {
+		return this.fullHealth - health;
 	}
 	
 }

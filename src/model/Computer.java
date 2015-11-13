@@ -23,4 +23,8 @@ public class Computer extends Player {
 		}
 	}
 	
+	public void removeAllPriorityShots() {
+		this.priorityShots = new ArrayList<Shot>();
+	}
+	
 }
