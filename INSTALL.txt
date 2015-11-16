@@ -1,0 +1,7 @@
+This project is built on Eclipse
+
+To compile, create a new Eclipse Java project, set the directory to the
+folder of this repository and click Finish.
+
+Eclipse will automatically generate all the necessary classpaths for you.
+Once open you'll only need to click Build & Run to run the project.
