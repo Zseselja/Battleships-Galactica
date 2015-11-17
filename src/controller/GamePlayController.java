@@ -5,6 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -197,6 +203,8 @@ public class GamePlayController {
 						player.setWin(true);
 					}
 				}
+				serialize();
+				deserialize();
 				renderView();
 			}
 
@@ -261,5 +269,50 @@ public class GamePlayController {
 		}
 		
 		return priorityShots;
+	}
+	/**
+	 * Method to serialize the player data. 
+	 * Writes the data to a file called player.txt which
+	 * could be shared between two players of the game in the
+	 * future.
+	 * */
+	private void serialize(){
+		Player player = model.getPlayer();
+		try{
+			FileOutputStream file = new FileOutputStream("player.txt");
+			ObjectOutputStream out = new ObjectOutputStream(file);
+			out.writeObject(player);
+			out.close();
+			file.close();
+			System.out.println("Finished Serialization\n");
+			
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+	}
+	/**
+	 * Method to deserialize the player data. 
+	 * Reads the data from the file "player.txt" which can be used
+	 * in the future to implement a 2 player game over a network.
+	 * */
+	private void deserialize(){
+		Player player;
+		try{
+			FileInputStream file = new FileInputStream("player.txt");
+			ObjectInputStream in = new ObjectInputStream(file);
+			player = (Player)in.readObject();
+			in.close();
+			file.close();
+			System.out.println("Finished Deserialization!\n");
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,10 +1,11 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShipList extends ArrayList<Ship> {
+public class ShipList extends ArrayList<Ship> implements Serializable{
 	
 	public ShipList() {
 		super();

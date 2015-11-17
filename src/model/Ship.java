@@ -1,9 +1,10 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 
-public class Ship {
+public class Ship implements Serializable{
 	private ShipType type;
 	private int fullHealth;
 	private int health;
