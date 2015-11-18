@@ -2,6 +2,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+/// 
+/// A Class that Keeps track of the Computers priority shots, 
+/// And gets the priority shots.
+///
 
 public class Computer extends Player {
 	private List<Shot> priorityShots;

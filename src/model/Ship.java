@@ -17,7 +17,7 @@ public class Ship implements Serializable{
 	 * @param head starting point of the ship
 	 * @param tail end point of the ship (must come up and right after head)
 	 * 
-	 * @throws Exception 
+	 * @throws Exception when there are Fat ships. AKA non rectangular 
 	 */
 	public Ship(ShipType type, int size , Point head, Point tail) throws Exception {
 		this.type = type;
@@ -45,9 +45,11 @@ public class Ship implements Serializable{
  
 	}
 	
-	/*
-	 * Automatically sets the tail horizontally from the head.
-	 */
+/// 
+/// Automatically sets the tail horizontally from the head.
+/// 
+///
+	 
 	public Ship(ShipType type, int size, Point head) throws Exception {
 		this.type = type;
 		this.health = size;
