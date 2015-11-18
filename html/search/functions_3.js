@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['ship',['Ship',['../classmodel_1_1_ship.html#a70ae509a5ae608bc0b66bd08b380ef2b',1,'model.Ship.Ship(ShipType type, int size, Point head, Point tail)'],['../classmodel_1_1_ship.html#acf0b97cedf8d4562b23531a1e5a0b6ae',1,'model.Ship.Ship(ShipType type, int size, Point head)']]]
+  ['intersects',['intersects',['../classmodel_1_1_ship.html#a6745175fec360fd647e1284c5e80ea12',1,'model::Ship']]],
+  ['issunk',['isSunk',['../classmodel_1_1_ship.html#afcd400fdf72e53dc170bfcbad681b6a3',1,'model::Ship']]],
+  ['isvertical',['isVertical',['../classmodel_1_1_ship.html#a161141fbeac9e2fb524f827ccfd35d9f',1,'model::Ship']]]
 ];

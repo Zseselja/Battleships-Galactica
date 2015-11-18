@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['launchfleetposition',['launchFleetPosition',['../classcontroller_1_1_game_controller.html#a2ce010758a60ea42ef2cf776db037af1',1,'controller::GameController']]],
-  ['launchgameplay',['launchGamePlay',['../classcontroller_1_1_game_controller.html#ad36fe6eb61780af17de203e1d738d429',1,'controller::GameController']]],
-  ['launchgameresults',['launchGameResults',['../classcontroller_1_1_game_controller.html#a3edcf5f7c5f11a5eb4d1b0e87352ba97',1,'controller::GameController']]],
-  ['launchleaderboard',['launchLeaderBoard',['../classcontroller_1_1_game_controller.html#aadb2bc595cccc7d1add63b92b547cc2f',1,'controller::GameController']]],
-  ['launchstart',['launchStart',['../classcontroller_1_1_game_controller.html#aca4def7dde4472e594ee009b3960919a',1,'controller::GameController']]],
-  ['leaderboardview',['LeaderBoardView',['../classview_1_1_leader_board_view.html',1,'view']]]
+  ['gamecontroller',['GameController',['../classcontroller_1_1_game_controller.html',1,'controller']]],
+  ['gameplaycontroller',['GamePlayController',['../classcontroller_1_1_game_play_controller.html',1,'controller']]],
+  ['gameplaymodel',['GamePlayModel',['../classmodel_1_1_game_play_model.html',1,'model']]],
+  ['gameplayview',['GamePlayView',['../classview_1_1_game_play_view.html',1,'view']]],
+  ['gameresultscontroller',['GameResultsController',['../classcontroller_1_1_game_results_controller.html',1,'controller']]],
+  ['gameresultsmodel',['GameResultsModel',['../classmodel_1_1_game_results_model.html',1,'model']]],
+  ['gameresultsview',['GameResultsView',['../classview_1_1_game_results_view.html',1,'view']]]
 ];
