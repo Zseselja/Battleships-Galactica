@@ -22,4 +22,13 @@ public class ShipFactoryTest {
 		assertEquals(shipPoint, newShip.getHead());
 	}
 
+	@Test
+	public void testBuildDestroyerPoint() {
+		ShipFactory shipFactory = new ShipFactory();
+		Point shipPoint = new Point(1, 1);
+		
+		Ship newShip = shipFactory.buildDestroyer(shipPoint);
+		
+		assertEquals(shipPoint, newShip.getHead());
+	}
 }
