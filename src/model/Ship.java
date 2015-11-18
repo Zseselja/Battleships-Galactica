@@ -57,11 +57,17 @@ public class Ship implements Serializable{
 		this.head = head;
 		this.tail = new Point(head.x+size-1, head.y);
 	}
-	
+/// 
+///	Is called when a ship is hit.
+/// 
+///
 	public void decreaseHealth() {
 		this.health = this.health - 1;
 	}
-	
+/// 
+/// Is called when health of ship is zero
+/// 
+///
 	public boolean isSunk() {
 		return this.health == 0;
 	}
@@ -81,11 +87,17 @@ public class Ship implements Serializable{
 	public void setTail(Point tail) {
 		this.tail = tail;
 	}
-	
+/// 
+///
+/// Checks if ship is Vertical
+///	
 	public boolean isVertical() {
 		return head.x == tail.x;
 	}
-	
+/// 
+/// returns size of ship
+/// 
+///	
 	public int size() {
 		if (isVertical()) {
 			return Math.abs(head.y-tail.y);
@@ -93,7 +105,7 @@ public class Ship implements Serializable{
 			return Math.abs(head.x-tail.x);
 		}
 	}
-       /*
+       /**
 	* This method determines if the shot from a player 
 	* hits a ship on the board or not. 
 	*/
