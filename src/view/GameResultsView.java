@@ -6,18 +6,21 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.stats;
+
 public class GameResultsView extends JPanel {
 	private static final int MAIN_BUTTON_WIDTH = 200;
 	private static final int MAIN_BUTTON_HEIGHT = 75;
 	
 	private JButton continueButton;
 	
-	public GameResultsView(int width, int height) {
+	public GameResultsView(int width, int height , stats gameStats) {
 		this.setLayout(null);
 		System.out.print("in game results view");
 		JTextField textField = new JTextField("    GameResults View");
-		JTextField shots = new JTextField("    Shots Taken: ");
-		JTextField accuracy = new JTextField("    Accuracy: ");
+		JTextField shots = new JTextField("    Shots Taken: " + gameStats.getShot());
+		double acc  = gameStats.getHit() / gameStats.getShot();
+		JTextField accuracy = new JTextField("    Accuracy: " + acc);
 		textField.setBounds(100, 100, 200, 100);
 		accuracy.setBounds(200, 300, 200, 100);
 		shots.setBounds(400, 300, 200, 100);
