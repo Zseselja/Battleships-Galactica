@@ -14,9 +14,18 @@ public class GameResultsView extends JPanel {
 	
 	public GameResultsView(int width, int height) {
 		this.setLayout(null);
-		JTextField textField = new JTextField("GameResults View");
+		System.out.print("in game results view");
+		JTextField textField = new JTextField("    GameResults View");
+		JTextField shots = new JTextField("    Shots Taken: ");
+		JTextField accuracy = new JTextField("    Accuracy: ");
 		textField.setBounds(100, 100, 200, 100);
+		accuracy.setBounds(200, 300, 200, 100);
+		shots.setBounds(400, 300, 200, 100);
 		this.add(textField);
+		this.add(shots);
+		this.add(accuracy);
+		
+		
 		
 		this.continueButton = new JButton("Continue");
 		this.continueButton.setFont(new Font("Impact", Font.PLAIN, 20));
