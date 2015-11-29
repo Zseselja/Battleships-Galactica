@@ -17,6 +17,8 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
+
 import model.Computer;
 import model.GamePlayModel;
 import model.Player;
@@ -27,7 +29,7 @@ import view.BoardConstants;
 import view.GamePlayView;
 
 public class GamePlayController {
-	private static final int COMPUTER_TURN_DELAY = 250;
+	private static final int COMPUTER_TURN_DELAY = 0;
 	
 	private GamePlayModel model;
 	private GamePlayView view;
@@ -186,6 +188,8 @@ public class GamePlayController {
 				
 				int col = e.getX()/GamePlayView.getBoardCellSize();
 				int row = e.getY()/GamePlayView.getBoardCellSize();
+				if (col >= 10) col = 9;
+				if (row >= 10) row = 9;
 				Shot shot = new Shot(col, row);
 				
 				if (playerShots.contains(shot)) {
