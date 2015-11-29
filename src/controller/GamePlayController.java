@@ -95,7 +95,13 @@ public class GamePlayController {
 							computer.setWin(true);
 						}
 						
-						
+						// Removes shots the computer has taken from the priorityShots list
+						// Avoids duplicates
+						for(Shot p: computerShots){
+							if(priorityShots.contains(p)){
+								priorityShots.remove(p);
+							}
+						}
 					}
 				}
 
@@ -312,7 +318,7 @@ public class GamePlayController {
 			out.writeObject(player);
 			out.close();
 			file.close();
-			System.out.println("Finished Serialization\n");
+			//System.out.println("Finished Serialization\n");
 			
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
@@ -334,7 +340,7 @@ public class GamePlayController {
 			player = (Player)in.readObject();
 			in.close();
 			file.close();
-			System.out.println("Finished Deserialization!\n");
+			//System.out.println("Finished Deserialization!\n");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
