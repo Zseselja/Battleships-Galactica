@@ -1,17 +1,26 @@
 package view;
 
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+
+
+
 
 import model.stats;
 
 public class GameResultsView extends JPanel {
 	private static final int MAIN_BUTTON_WIDTH = 200;
 	private static final int MAIN_BUTTON_HEIGHT = 75;
-	
+	public BufferedImage background;
 	private JButton continueButton;
 	
 	public GameResultsView(int width, int height , stats gameStats) {
@@ -29,6 +38,20 @@ public class GameResultsView extends JPanel {
 		this.add(textField);
 		this.add(shots);
 		this.add(accuracy);
+		try {
+			if(gameStats.win == true){
+				this.background = ImageIO.read(new File("images/win_endSC.png"));
+			}else{
+				this.background = ImageIO.read(new File("images/loose_endSC.png"));
+			}
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		
 		
 		
 		
@@ -44,4 +67,9 @@ public class GameResultsView extends JPanel {
 		return continueButton;
 	}
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(background, 0, 0, null);
+	}
 }

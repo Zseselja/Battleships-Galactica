@@ -166,6 +166,8 @@ public class GameController
 			}
 			gameStats.addShot();
 		}
+		gameStats.win = m.getPlayer().isWin();
+		
 		GameResultsView gameResultsView = new GameResultsView(window.getContentPane().getWidth(), window.getContentPane().getHeight() , gameStats);
 		gameResultsView.getContinueButton().addActionListener(new ActionListener() {
 			@Override
