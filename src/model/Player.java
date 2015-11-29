@@ -26,6 +26,8 @@ public class Player implements Serializable {
 	public List<Shot> getShots() {
 		return shots;
 	}
+	
+	
 
 	public void setShots(List<Shot> shots) {
 		this.shots = shots;

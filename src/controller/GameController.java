@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import model.FleetPositionModel;
 import model.GamePlayModel;
 import model.ShipList;
+import model.Shot;
+import model.Player;
 import model.stats;
 import view.FleetPositionView;
 import view.GamePlayView;
@@ -127,18 +129,16 @@ public class GameController
 	 */
 	public void launchGamePlay(ShipList playerShips, ShipList computerShips) {
 		System.out.println("Navigating to Game Play View");
-		stats gameStats = new stats();
-		gameStats.addShot();
-		gameStats.addHit();
 		
+
 		GamePlayView gamePlayView = new GamePlayView(window.getContentPane().getWidth(), window.getContentPane().getHeight());
-		GamePlayModel gamePlayModel = new GamePlayModel(playerShips, computerShips);
+		GamePlayModel gamePlayModel = new GamePlayModel(playerShips, computerShips );
 		this.gamePlayController = new GamePlayController(gamePlayModel, gamePlayView);
 		
 		gamePlayView.getContinueButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				launchGameResults(gameStats);
+				launchGameResults();
 			}
 		});
 		
@@ -150,8 +150,14 @@ public class GameController
 	/**
 	 * Instantiates the GameResultsView, binds to its panel-changing actions, and applies it to the window
 	 */
-	public void launchGameResults(stats gameStats) {
+	public void launchGameResults() {
 		System.out.println("Navigating to Game Results View");
+		stats gameStats = new stats();
+		
+//		**problem with static types
+		
+//		gameStats.hits = GamePlayController.getTotalHits();
+//		gameStats.shots = GamePlayController.getTotalShots();
 		
 		GameResultsView gameResultsView = new GameResultsView(window.getContentPane().getWidth(), window.getContentPane().getHeight() , gameStats);
 

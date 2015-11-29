@@ -270,6 +270,34 @@ public class GamePlayController {
 		
 		return priorityShots;
 	}
+	
+	public int getTotalShots() {
+		Player x;
+		x = model.getPlayer();
+		int totalShots = 0;
+		for (Shot s: x.getShots()) {
+			totalShots++;
+					
+		}
+		return totalShots;
+	}
+	
+	public  int getTotalHits() {
+		Player x;
+		x = model.getPlayer();
+		int totalHits = 0;
+		for (Shot s: x.getShots()) {
+			if(s.isHit()){
+				totalHits++;
+			}
+					
+		}
+		return totalHits;
+	}
+	
+	
+	
+	
 	/**
 	 * Method to serialize the player data. 
 	 * Writes the data to a file called player.txt which
