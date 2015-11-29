@@ -19,8 +19,8 @@ public class GameResultsView extends JPanel {
 		System.out.print("in game results view");
 		JTextField textField = new JTextField("    GameResults View");
 		JTextField shots = new JTextField("    Shots Taken: " + gameStats.getShot());
-		//double acc  = gameStats.getHit() / gameStats.getShot();
-		JTextField accuracy = new JTextField("    Accuracy: " + 0);
+		double acc  = ((double)gameStats.getHit() / (double)gameStats.getShot())* 100;
+		JTextField accuracy = new JTextField("    Accuracy: " + acc + "%");
 		textField.setBounds(100, 100, 200, 100);
 		accuracy.setBounds(200, 300, 200, 100);
 		shots.setBounds(400, 300, 200, 100);

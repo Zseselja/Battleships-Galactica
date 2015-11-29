@@ -191,8 +191,6 @@ public class GamePlayController {
 				if (playerShots.contains(shot)) {
 					System.out.println("Already shot there");
 					return;
-				} else {
-					playerShots.add(shot);
 				}
 
 				Ship ship = computerShips.getIntersectingShip(shot);
@@ -209,6 +207,7 @@ public class GamePlayController {
 						player.setWin(true);
 					}
 				}
+				playerShots.add(shot); // Moved down here so the shot can be flagged as hit before being added
 				serialize();
 				deserialize();
 				renderView();
@@ -299,6 +298,10 @@ public class GamePlayController {
 					
 		}
 		return totalHits;
+	}
+	
+	public GamePlayModel getModel(){
+		return this.model;
 	}
 	
 	

@@ -158,9 +158,15 @@ public class GameController
 		
 //		gameStats.hits = GamePlayController.getTotalHits();
 //		gameStats.shots = GamePlayController.getTotalShots();
-		
+		// New stuff
+		GamePlayModel m = gamePlayController.getModel();
+		for(Shot p: m.getPlayer().getShots()){
+			if(p.isHit()){
+				gameStats.addHit();
+			}
+			gameStats.addShot();
+		}
 		GameResultsView gameResultsView = new GameResultsView(window.getContentPane().getWidth(), window.getContentPane().getHeight() , gameStats);
-
 		gameResultsView.getContinueButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

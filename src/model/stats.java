@@ -12,7 +12,7 @@ public class stats {
 		this.hits++;
 	}
 	public int getShot(){
-		return this.hits;
+		return this.shots;
 	}
 	public int getHit(){
 		return this.hits;
