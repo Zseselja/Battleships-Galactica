@@ -17,8 +17,6 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
-
 import model.Computer;
 import model.GamePlayModel;
 import model.Player;
