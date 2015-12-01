@@ -10,20 +10,20 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-
-
-
-
 import model.stats;
+
+
+
 
 public class GameResultsView extends JPanel {
 	private static final int MAIN_BUTTON_WIDTH = 200;
 	private static final int MAIN_BUTTON_HEIGHT = 75;
+	
 	public BufferedImage background;
 	private JButton continueButton;
 	
 	public GameResultsView(int width, int height , stats gameStats) {
+		
 		this.setLayout(null);
 		System.out.print("in game results view");
 		JTextField textField = new JTextField("    GameResults View");
@@ -32,6 +32,7 @@ public class GameResultsView extends JPanel {
 		double acc  = ((double)gameStats.getHit() / (double)gameStats.getShot())* 100;
 		String accString = String.format( "%1$,.2f", acc );
 		JTextField accuracy = new JTextField( "    Accuracy: " + accString + "%");
+
 		textField.setBounds(100, 100, 200, 100);
 		accuracy.setBounds(200, 300, 200, 100);
 		shots.setBounds(400, 300, 200, 100);
